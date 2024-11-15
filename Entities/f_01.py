@@ -3,6 +3,7 @@ from .dependencies.credenciais import Credential
 from .dependencies.config import Config
 from .dependencies.functions import Functions, sleep
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 import os
 from getpass import getuser
 
@@ -16,7 +17,7 @@ class F_01(SAPManipulation):
     
     @SAPManipulation.start_SAP
     def coletar(self) -> str:
-        date = datetime.now()
+        date = datetime.now() - relativedelta(months=1)
         
         self.session.findById("wnd[0]/tbar[0]/okcd").text = "/n f.01"
         self.session.findById("wnd[0]").sendVKey(0)
@@ -33,21 +34,17 @@ class F_01(SAPManipulation):
         self.session.findById("wnd[0]/usr/tabsTABSTRIP_TABBL1/tabpUCOM1/ssub%_SUBSCREEN_TABBL1:RFBILA00:0001/radBILAGRID").setFocus()
         self.session.findById("wnd[0]/tbar[1]/btn[8]").press()
         self.session.findById("wnd[1]/tbar[0]/btn[0]").press()
-        
         file_temp_path = os.path.join(f'C:\\Users\\{getuser()}\\Downloads', date.strftime('contas_viradas_%d%m%Y%H%M%S_.xlsx'))
+        self.session.findById("wnd[0]/tbar[1]/btn[26]").press()
+        self.session.findById("wnd[0]/tbar[1]/btn[19]").press()
         self.session.findById("wnd[0]/usr/cntlGRID1/shellcont/shell/shellcont[1]/shell").contextMenu()
         self.session.findById("wnd[0]/usr/cntlGRID1/shellcont/shell/shellcont[1]/shell").selectContextMenuItem("&XXL")
         self.session.findById("wnd[1]/tbar[0]/btn[0]").press()
         self.session.findById("wnd[1]/usr/ctxtDY_PATH").text = os.path.dirname(file_temp_path)
         self.session.findById("wnd[1]/usr/ctxtDY_FILENAME").text = os.path.basename(file_temp_path)
         self.session.findById("wnd[1]/tbar[0]/btn[0]").press()
-        
         sleep(3)
         Functions.fechar_excel(file_temp_path)
-        try:
-            os.unlink(file_temp_path)
-        except:
-            pass
         
         self.fechar_sap()
         
@@ -58,4 +55,5 @@ class F_01(SAPManipulation):
         self.session.findById("wnd[0]/tbar[0]/okcd").text = "/n f.01"
         self.session.findById("wnd[0]").sendVKey(0)
 
-
+if __name__ == "__main__":
+    pass

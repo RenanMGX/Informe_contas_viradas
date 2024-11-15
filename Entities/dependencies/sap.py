@@ -122,7 +122,7 @@ class SAPManipulation():
                         self.session.findById("wnd[0]/usr/txtRSYST-BNAME").text = self.__user # Usuario
                         self.session.findById("wnd[0]/usr/pwdRSYST-BCODE").text = self.__password # Senha
                         self.session.findById("wnd[0]").sendVKey(0)
-                        continue
+                        break
                         
                     if _ >= ((60*60) - 2):
                         Logs().register(status='Error', description="não foi possivel se conectar a mais uma tela do SAP", exception=traceback.format_exc())
