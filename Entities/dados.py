@@ -33,6 +33,8 @@ class ContaStatus:
         if conta['Nº conta'] is nb.nan:
             return
         
+        num_conta:str = conta['Nº conta']
+        
         result = self.__df_base[
             self.__df_base['Conta do Razão'] == conta['Nº conta']
         ]['Natureza Contábil']
@@ -44,8 +46,11 @@ class ContaStatus:
             except:
                 print(conta['Nº conta'], conta['Total período relatório'],'Valor invalido')
                 return
-                
-            if natureza == 'Devedora':
+            
+            if num_conta.startswith('120902'):
+                if valor > 0:
+                    self.__contas_viradas.append(conta)               
+            elif natureza == 'Devedora':
                 if valor < 0:
                     self.__contas_viradas.append(conta)
             elif natureza == 'Credora':
@@ -54,7 +59,8 @@ class ContaStatus:
             else:
                 print(conta['Nº conta'], "natureza não encontrada")
         else:
-            self.__contas_nao_encontradas.append(str(conta['Nº conta']))
+            if (not num_conta.startswith('9')) and (not num_conta.startswith('6')):
+                self.__contas_nao_encontradas.append(str(conta['Nº conta']))
 
 if __name__ == "__main__":
     pass

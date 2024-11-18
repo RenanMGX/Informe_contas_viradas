@@ -44,7 +44,11 @@ class F_01(SAPManipulation):
         self.session.findById("wnd[1]/usr/ctxtDY_FILENAME").text = os.path.basename(file_temp_path)
         self.session.findById("wnd[1]/tbar[0]/btn[0]").press()
         sleep(3)
-        Functions.fechar_excel(file_temp_path)
+        for _ in range(3):
+            try:
+                Functions.fechar_excel(file_temp_path)
+            except:
+                pass
         
         self.fechar_sap()
         
