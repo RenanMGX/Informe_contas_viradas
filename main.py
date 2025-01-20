@@ -3,6 +3,7 @@ from Entities.f_01 import F_01, datetime
 from Entities.dados import ContaStatus, pd, os
 from Entities.dependencies.arguments import Arguments
 from Entities.email import Email, Config, Credential
+from getpass import getuser
 
 class Execute:
     @staticmethod
@@ -48,7 +49,7 @@ class Execute:
         anexo = False
         
         
-        contas_viradas_path:str = os.path.join(r'C:\Users\renan.oliveira\Downloads', datetime.now().strftime('contas_viradas-%d%m%Y-.xlsx'))
+        contas_viradas_path:str = os.path.join(f'C:\\Users\\{getuser()}\\Downloads', datetime.now().strftime('contas_viradas-%d%m%Y-.xlsx'))
         df_viradas = pd.DataFrame(conta_status.contas_viradas)
         if not df_viradas.empty:
             anexo = True
@@ -61,7 +62,7 @@ class Execute:
                 pass
         
         
-        contas_nao_encontradas_path:str = os.path.join(r'C:\Users\renan.oliveira\Downloads', datetime.now().strftime('contas_nao_encontradas-%d%m%Y-.xlsx'))
+        contas_nao_encontradas_path:str = os.path.join(f'C:\\Users\\{getuser()}\\Downloads', datetime.now().strftime('contas_nao_encontradas-%d%m%Y-.xlsx'))
         df_nao_encontradas = pd.DataFrame(conta_status.contas_nao_encontradas)
         if not df_nao_encontradas.empty:
             anexo = True
