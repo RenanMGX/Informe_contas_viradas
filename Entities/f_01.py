@@ -12,7 +12,7 @@ from getpass import getuser
 class F_01(SAPManipulation):
     def __init__(self):
         crd:dict = Credential(Config()['credential']['crd']).load()
-        super().__init__(user=crd['user'], password=crd['password'], ambiente=crd['ambiente'])
+        super().__init__(user=crd['user'], password=crd['password'], ambiente=crd['ambiente'], new_conection=True)
         
     
     @SAPManipulation.start_SAP
